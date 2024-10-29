@@ -1,12 +1,8 @@
-import { State } from '../state/state.enum';
-import { inlineKeyboard } from '../feature/menu';
 import * as path from 'path';
 import { InputFile, Context } from 'grammy';
+import { startInlineKeyboard } from '../ui';
 
-export const startHandler = async (ctx: Context) => {
-  // Send the menu.
-  ctx.session.state = State.START; // Устанавливаем начальное состояние
-
+export const startService = async (ctx: Context) => {
   await ctx.reply(
     'Привет, давайте знакомиться. Я ваш помошник и собеседник - HearLionBot'
   );
@@ -19,7 +15,7 @@ export const startHandler = async (ctx: Context) => {
   await ctx.reply(
     'Вы можете выбрать что-то из пункта меню или давайте просто поболтаем',
     {
-      reply_markup: inlineKeyboard, // Возвращаем встроенную клавиатуру
+      reply_markup: startInlineKeyboard, // Возвращаем встроенную клавиатуру
     }
   );
 };

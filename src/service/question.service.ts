@@ -1,7 +1,10 @@
 import { pipeline } from '@xenova/transformers';
+import axios, { AxiosResponse } from 'axios';
 
-export const getAIAnswer = async (
-  question: string,
+const AI_RUS_SERVICE_URL = 'http://localhost:3000/question';
+
+export const getAIEnglishQuestionAnswer = async (
+  question: string
 ): Promise<string> => {
   // Create a text-generation pipeline
   const generator = await pipeline('text-generation', 'Xenova/gpt2');
@@ -14,7 +17,7 @@ export const getAIAnswer = async (
   // const result = await translate(ctx.message.text, { to: 'en' });
 
   // Generate text (custom parameters)
-  const generatedAnswer =  await generator(question, {
+  const generatedAnswer = await generator(question, {
     max_new_tokens: 50,
     do_sample: true,
     // top_k: 5,
@@ -26,4 +29,20 @@ export const getAIAnswer = async (
   // Using context shortcut
 
   return generatedAnswer[0].generated_text;
+};
+
+export const getAIRussionQuestionAnswer = async (
+  question: string
+): Promise<string> => {
+  try {
+    const response: AxiosResponse<MyData> = await axios.get(AI_RUS_SERVICE_URL);
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.error('Ошибка при запросе:', error.message);
+    } else {
+      console.error('Неизвестная ошибка:', error);
+    }
+    return 'Сервис временно недоступен';
+  }
 };

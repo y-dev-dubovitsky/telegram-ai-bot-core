@@ -1,19 +1,13 @@
-import { keyboard } from '../feature/menu';
+import { mainKeyboard } from '../ui';
+import { Context } from 'grammy';
 
 // Мидлварка для автоматического добавления mainMenuKeyboard
-export const menuMiddleware = async (ctx, next) => {
-  // Проверяем, является ли команда /start
-  if (ctx.update.message?.text === '/start') {
-    // Пропускаем добавление клавиатуры для команды /start
-    await next();
-    return;
-  }
-
+export const menuMiddleware = async (ctx: Context, next) => {
   // Добавляем mainMenuKeyboard к каждому ответу
   ctx.reply = (text: string, options = {}) => {
     return ctx.api.sendMessage(ctx.chat.id, text, {
       ...options,
-      reply_markup: keyboard,
+      reply_markup: mainKeyboard,
     });
   };
 

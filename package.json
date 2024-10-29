@@ -23,6 +23,7 @@
   "author": "Elson Correia @ Before Semicolon",
   "license": "MIT",
   "devDependencies": {
+    "@types/axios": "^0.14.4",
     "@types/jest": "^29.5.12",
     "@types/node": "^22.4.0",
     "@types/supertest": "^6.0.2",
@@ -45,6 +46,7 @@
     "@grammyjs/types": "^3.14.0",
     "@vitalets/google-translate-api": "^9.2.0",
     "@xenova/transformers": "^2.17.2",
+    "axios": "^1.7.7",
     "dotenv": "^16.4.5",
     "grammy": "^1.30.0",
     "http-proxy-agent": "^7.0.2"

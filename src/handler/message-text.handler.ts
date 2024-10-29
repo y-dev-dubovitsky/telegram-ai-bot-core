@@ -1,19 +1,26 @@
 import { Context } from 'grammy';
-import { getAIAnswer } from '../service/question.service';
-import { availableCommandsService } from '../service/available-commands.service';
+import {
+  getAIEnglishQuestionAnswer,
+  getAIRussionQuestionAnswer,
+} from '../service/question.service';
+import { aboutService } from '../service/about.service';
+import { commandsService } from '../service/commands.service';
+import { startService } from '../service/start.service';
 import { State } from '../state/state.enum';
 
 export const messageTextHandler = async (ctx: Context) => {
   const text: string | undefined = ctx.message?.text;
 
-  //TODO Написать мидлварку которая состояние меняет
-  if (isState(text)) {
-    ctx.session.state = text;
-  }
+  console.log(ctx)
 
   switch (ctx.session.state) {
-    case State.MAIN: {
-      const aiAnswer = await getAIAnswer(text);
+    case State.START: {
+      await startService(ctx);
+      break;
+    }
+    case State.AI_TALK: {
+      await ctx.reply('Мне нужно подумать...');
+      const aiAnswer = await getAIRussionQuestionAnswer(text);
       ctx.reply(aiAnswer);
       break;
     }
@@ -21,19 +28,16 @@ export const messageTextHandler = async (ctx: Context) => {
       ctx.reply('Начинаю переводить');
       break;
     }
-    case State.AVAILABLE_COMMANDS: {
-      availableCommandsService(ctx);
+    case State.COMMANDS: {
+      commandsService(ctx);
+      break;
+    }
+    case State.ABOUT: {
+      aboutService(ctx);
       break;
     }
     default: {
       ctx.reply('Неизвестная команда. Пожалуйста, выберите опцию из меню.');
     }
   }
-};
-
-const isState = (text: string | undefined): boolean => {
-  if (text === undefined) {
-    return false;
-  }
-  return Object.values(State).includes(text as State);
 };

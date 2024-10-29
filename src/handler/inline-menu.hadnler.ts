@@ -1,5 +1,6 @@
 import { Context } from 'grammy';
 import { State } from '../state/state.enum';
+import { commandsService } from '../service/commands.service';
 
 export const inlineMenuHandler = (ctx: Context): void => {
   const data = ctx.callbackQuery?.data;
@@ -10,15 +11,8 @@ export const inlineMenuHandler = (ctx: Context): void => {
   }
 
   switch (data) {
-    case 'GENERAL': {
-      ctx.session.state = State.MAIN;
-      ctx.reply('Вы на главной странице.');
-      break;
-    }
-    case 'ABOUT': {
-      // ctx.answerCallbackQuery(); // Отвечаем на колбэк-запрос, чтобы убрать "часики"
-      ctx.session.state = State.MAIN;
-      ctx.reply('Вы на странице about');
+    case State.COMMANDS: {
+      commandsService(ctx);
       break;
     }
     default: {
