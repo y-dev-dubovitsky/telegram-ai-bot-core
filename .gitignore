@@ -44,8 +44,8 @@ babel-cache.json
 webpack-stats.json
 
 # Файлы, созданные Docker
-Dockerfile
-docker-compose.yml
+# Dockerfile
+# docker-compose.yml
 
 # Файлы, созданные CI/CD
 .travis.yml
