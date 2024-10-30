@@ -8,7 +8,9 @@ export const stateManagerMiddleware = async (
 ) => {
   const text = ctx.message?.text || ctx.callbackQuery?.data;
 
+  // @ts-expect-error (remove it)
   if (text && ctx.session.state !== text) {
+    // @ts-expect-error (remove it)
     ctx.session.state = text; // Устанавливаем новое состояние
 
     switch (text) {

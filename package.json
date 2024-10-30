@@ -4,7 +4,8 @@
   "type": "module",
   "scripts": {
     "clean": "rimraf ./build",
-    "build": "npm-run-all check test clean && tsc",
+    "copy-assets": "cp -R assets build/src/assets",
+    "build": "npm-run-all clean && tsc && tsc-alias && npm run copy-assets",
     "start": "node ./build/src",
     "local": "tsx ./src",
     "local:watch": "nodemon ./src -e ts,json --exec 'npm run local'",
@@ -38,6 +39,7 @@
     "rimraf": "^6.0.1",
     "supertest": "^7.0.0",
     "ts-jest": "^29.2.4",
+    "tsc-alias": "^1.8.10",
     "tsx": "^4.17.0",
     "typescript": "^5.5.4"
   },

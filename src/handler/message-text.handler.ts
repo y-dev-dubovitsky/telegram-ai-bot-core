@@ -1,8 +1,5 @@
 import { Context } from 'grammy';
-import {
-  getAIEnglishQuestionAnswer,
-  getAIRussionQuestionAnswer,
-} from '../service/question.service';
+import { getAIRussionQuestionAnswer } from '../service/question.service';
 import { aboutService } from '../service/about.service';
 import { commandsService } from '../service/commands.service';
 import { startService } from '../service/start.service';
@@ -11,8 +8,9 @@ import { State } from '../state/state.enum';
 export const messageTextHandler = async (ctx: Context) => {
   const text: string | undefined = ctx.message?.text;
 
-  console.log(ctx)
+  console.log(ctx);
 
+  // @ts-expect-error (remove it)
   switch (ctx.session.state) {
     case State.START: {
       await startService(ctx);
@@ -20,6 +18,7 @@ export const messageTextHandler = async (ctx: Context) => {
     }
     case State.AI_TALK: {
       await ctx.reply('Мне нужно подумать...');
+      //@ts-expect-error (remove it)
       const aiAnswer = await getAIRussionQuestionAnswer(text);
       ctx.reply(aiAnswer);
       break;

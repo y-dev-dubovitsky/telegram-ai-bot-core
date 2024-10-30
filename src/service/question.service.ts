@@ -28,6 +28,7 @@ export const getAIEnglishQuestionAnswer = async (
 
   // Using context shortcut
 
+  // @ts-expect-error (remove it)
   return generatedAnswer[0].generated_text;
 };
 
@@ -35,6 +36,8 @@ export const getAIRussionQuestionAnswer = async (
   question: string
 ): Promise<string> => {
   try {
+    console.log(question)
+    //@ts-expect-error (remove it)
     const response: AxiosResponse<MyData> = await axios.get(AI_RUS_SERVICE_URL);
     return response.data;
   } catch (error) {

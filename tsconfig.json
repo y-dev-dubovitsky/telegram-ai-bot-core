@@ -113,6 +113,10 @@
     "skipLibCheck": true
     /* Skip type checking all .d.ts files. */
   },
+  "tsc-alias": {
+    "resolveFullPaths": true,
+    "verbose": false
+  },
   "include": [
     "src",
     "package.json"
