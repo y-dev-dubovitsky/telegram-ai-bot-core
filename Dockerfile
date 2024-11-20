@@ -1,5 +1,5 @@
-# Этап сборки
-FROM node:23.2.0-bullseye AS builder
+# Этап сборки и запуска
+FROM node:18
 
 # Устанавливаем рабочую директорию
 WORKDIR /usr/src/app
@@ -16,22 +16,11 @@ COPY . .
 # Компилируем TypeScript в JavaScript
 RUN npm run build
 
-# Этап запуска
-FROM node:23.2.0-bullseye
-
-# Устанавливаем рабочую директорию
-WORKDIR /usr/src/app
-
-# Копируем только необходимые файлы из этапа сборки
-COPY --from=builder /usr/src/app/build ./build
-COPY --from=builder /usr/src/app/package*.json ./
-COPY --from=builder /usr/src/app/assets/ ./assets/
+# Проверяем наличие файла index.js
+RUN if [ ! -f ./build/src/index.js ]; then echo "Файл index.js не найден!" && exit 1; fi
 
 # Устанавливаем только необходимые зависимости для продакшена
 RUN npm install --only=production
-
-# Проверяем наличие файла index.js
-RUN if [ ! -f ./build/src/index.js ]; then echo "Файл index.js не найден!" && exit 1; fi
 
 # Проверяем версию Node.js
 RUN node -v
