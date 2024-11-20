@@ -1,5 +1,5 @@
 # Этап сборки
-FROM node:18 AS builder
+FROM node:23.2.0-bullseye AS builder
 
 # Устанавливаем рабочую директорию
 WORKDIR /usr/src/app
@@ -17,7 +17,7 @@ COPY . .
 RUN npm run build
 
 # Этап запуска
-FROM node:18
+FROM node:23.2.0-bullseye
 
 # Устанавливаем рабочую директорию
 WORKDIR /usr/src/app
