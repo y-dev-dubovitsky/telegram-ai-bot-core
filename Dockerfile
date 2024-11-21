@@ -1,32 +1,38 @@
-# Этап сборки и запуска
-FROM node:18
+# Укажите базовый образ для сборки
+FROM node:18 AS builder
 
-# Устанавливаем рабочую директорию
-WORKDIR /usr/src/app
+# Установите рабочую директорию
+WORKDIR /app
 
-# Копируем package.json и package-lock.json
-COPY package*.json ./
+# Копируйте package.json и package-lock.json
+COPY package.json package-lock.json ./
 
-# Устанавливаем зависимости
+# Установите зависимости (включая devDependencies)
 RUN npm install
 
-# Копируем все файлы приложения
+# Копируйте остальные файлы проекта
 COPY . .
 
-# Компилируем TypeScript в JavaScript
+# Выполните сборку проекта
 RUN npm run build
 
-# Проверяем наличие файла index.js
-RUN if [ ! -f ./build/src/index.js ]; then echo "Файл index.js не найден!" && exit 1; fi
+# Укажите базовый образ для запуска
+FROM node:18 AS runtime
 
-# Устанавливаем только необходимые зависимости для продакшена
-RUN npm install --only=production
+# Установите рабочую директорию для приложения
+WORKDIR /app
 
-# Проверяем версию Node.js
-RUN node -v
+# Копируйте только необходимые артефакты из стадии сборки
+COPY --from=builder /app/build ./build
+COPY --from=builder /app/assets ./assets
+COPY package.json ./
+COPY package-lock.json ./
 
-# Устанавливаем права на выполнение (если необходимо)
-RUN chmod +x ./build/src/index.js
+# Установите только production зависимости
+RUN npm install --only=prod
 
-# Указываем команду для запуска приложения
-CMD ["node", "./build/src/index.js"]
+# Объявите переменную окружения
+ENV NODE_ENV=production
+
+# Укажите команду для запуска приложения
+CMD ["node", "./build/src"]
