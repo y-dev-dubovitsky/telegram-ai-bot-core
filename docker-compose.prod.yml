@@ -1,0 +1,7 @@
+version: '3.7'
+
+services:
+  bot-core-docker:
+    build:
+      target: production
+    command: node build/src/index.js

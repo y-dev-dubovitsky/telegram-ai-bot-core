@@ -16,6 +16,8 @@
 - [Stack Overflow: Как исправить импорты](https://stackoverflow.com/questions/62619058/appending-js-extension-on-relative-import-statements-during-typescript-compilat)
 - [tsc-alias на npm](https://www.npmjs.com/package/tsc-alias)
 
+## Полезная статья
+- [Setting up Docker + TypeScript + Node (Hot reloading code changes in a running container)](https://dev.to/dariansampare/setting-up-docker-typescript-node-hot-reloading-code-changes-in-a-running-container-2b2f)
 
 
 

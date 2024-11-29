@@ -1,38 +1,15 @@
-# Укажите базовый образ для сборки
-FROM node:18 AS builder
+FROM node:20.18.1-slim AS base
 
-# Установите рабочую директорию
-WORKDIR /app
+WORKDIR /home/app
 
-# Копируйте package.json и package-lock.json
-COPY package.json package-lock.json ./
+COPY package*.json ./
 
-# Установите зависимости (включая devDependencies)
-RUN npm install
+RUN npm i
 
-# Копируйте остальные файлы проекта
 COPY . .
 
-# Выполните сборку проекта
+FROM base AS production
+
+ENV NODE_PATH=./build
+
 RUN npm run build
-
-# Укажите базовый образ для запуска
-FROM node:18 AS runtime
-
-# Установите рабочую директорию для приложения
-WORKDIR /app
-
-# Копируйте только необходимые артефакты из стадии сборки
-COPY --from=builder /app/build ./build
-COPY --from=builder /app/assets ./assets
-COPY package.json ./
-COPY package-lock.json ./
-
-# Установите только production зависимости
-RUN npm install --only=prod
-
-# Объявите переменную окружения
-ENV NODE_ENV=production
-
-# Укажите команду для запуска приложения
-CMD ["node", "./build/src"]
